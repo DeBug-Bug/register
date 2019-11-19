@@ -1,0 +1,35 @@
+server:
+  port:
+
+spring:
+  security:
+    user:
+      name: account
+      password: you_password
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    #由于该应用为注册中心，声明自己是个服务端，不去取别人的数据
+    registerWithEureka: false
+    #由于注册中心的职责就是维护服务实例，所以他不需要去检索服务
+    fetchRegistry: false
+    serviceUrl:
+      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    # 关闭自我保护模式（缺省为打开）
+    enable-self-preservation: false
+    # 续期时间，即扫描失效服务的间隔时间（缺省为60*1000ms）
+    eviction-interval-timer-in-ms: 600000
+#logging:
+#  file:
+#    path: ./logs
+#  config:
+#    classpath: /logback-spring.xml
+#  level:
+#    root: error
+info:
+  version: '1.0'
+  describe: '注册中心'
+  ip: ${spring.cloud.client.ip-address}
